@@ -5,4 +5,4 @@ page.
 
 ## Example
 
-http://mrichards42.github.io/news-reader?feed=https://www.npr.org/feeds/1001/feed.json
+http://mrichards42.github.io/news-reader/?feed=https://www.npr.org/feeds/1001/feed.json
