@@ -95,7 +95,16 @@
     return result;
   }
 
+  var RSS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url="
+
+  function isJSON(url) {
+    return url.match(/json$/i);
+  }
+
   function fetchFeedItems(url) {
+    if (! isJSON(url)) {
+      url = RSS_PROXY + encodeURIComponent(url)
+    }
     return fetch(url)
       .then(res => res.json())
       .then(postProcessFeed)
