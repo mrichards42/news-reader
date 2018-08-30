@@ -1,5 +1,10 @@
 (function({root, feeds, templates}) {
 
+  var domParser = new DOMParser();
+  function unencodeHTML(s) {
+    return domParser.parseFromString(s, 'text/html').body.textContent;
+  }
+
   function niceDateFormat(d) {
     if (d.startOf('day').isSame(dayjs().startOf('day'))) {
       return d.format("h:mm a");
@@ -43,6 +48,9 @@
           item.url = item.url || item.link;
           item.date_published = item.date_published || item.pubDate;
           item.image = item.image || (item.enclosure && item.enclosure.link);
+          if (item.image) {
+            item.image = unencodeHTML(item.image);
+          }
           // Formatting
           item.source_icon = f.icon;
           item.timestamp = niceDateFormat(dayjs(item.date_published));
