@@ -76,6 +76,25 @@
     });
   }
 
+  function mixFeedItems(feeds) {
+    console.log(feeds)
+    var result = []
+    // Sort longest to shortest
+    feeds = [].slice.apply(feeds).sort((a, b) => b.length - a.length);
+    for (var i = 0; feeds.length > 0; ++i) {
+      // Iterate backwards so we can pop off the shortest feeds as we go
+      for (var j = feeds.length - 1; j >= 0; --j) {
+        var item = feeds[j][i];
+        if (item) {
+          result.push(item);
+        } else {
+          feeds.pop();
+        }
+      }
+    }
+    return result;
+  }
+
   function fetchFeedItems(url) {
     return fetch(url)
       .then(res => res.json())
@@ -88,6 +107,7 @@
   }
 
   Promise.all(feeds.map(fetchFeedItems))
+    .then(mixFeedItems)
     .then(items => displayFeedItems(root, items))
     .catch(console.error.bind(console));
 
