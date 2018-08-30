@@ -86,7 +86,7 @@
 
 })({
   root: document.getElementById("content"),
-  feeds: document.location.search.match(/[?&]feed=[^&]*/g).map(s => s.split('=')[1]),
+  feeds: document.location.search.match(/[?&]feed=[^&]*/g).map(s => s.split(/^.feed=/)[1]),
   templates: {
     feedArticle: Handlebars.compile(`
       <a href="{{url}}">
