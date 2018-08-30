@@ -70,19 +70,26 @@
     );
   }
 
-  function displayFeed(root, feed) {
-    feed.items.forEach(item => {
+  function displayFeedItems(root, items) {
+    items.forEach(item => {
       root.insertAdjacentHTML("beforeend", templates.feedArticle(item));
     });
   }
 
-  feeds.forEach(url => {
-    fetch(url)
+  function fetchFeedItems(url) {
+    return fetch(url)
       .then(res => res.json())
       .then(postProcessFeed)
-      .then(feed => displayFeed(root, feed))
+      .then(f => f.items || [])
+      .catch(err => {
+        console.error(err);
+        return [];
+      });
+  }
+
+  Promise.all(feeds.map(fetchFeedItems))
+    .then(items => displayFeedItems(root, items))
     .catch(console.error.bind(console));
-  });
 
 })({
   root: document.getElementById("content"),
