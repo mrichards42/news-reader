@@ -28,10 +28,26 @@
           /(_slide|_wide|_custom)?\b(-[^-.]*)(.\w+)$/,
           '$2-s300$3'
         );
-        item.timestamp = niceDateFormat(dayjs(item.date_published));
-        item.source_icon = f.icon;
         return item;
       });
+      return f;
+    }
+  }, {
+    // Smoothing out differences between json and rss feeds
+    match: f => true,
+    process: f => {
+      f.icon = f.icon || f.image;
+      f.items = f.items
+        .filter(item => item.title)
+        .map(item => {
+          item.url = item.url || item.link;
+          item.date_published = item.date_published || item.pubDate;
+          item.image = item.image || (item.enclosure && item.enclosure.link);
+          // Formatting
+          item.source_icon = f.icon;
+          item.timestamp = niceDateFormat(dayjs(item.date_published));
+          return item;
+        });
       return f;
     }
   }];
