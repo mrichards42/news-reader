@@ -11,7 +11,16 @@
   }
 
   var postProcessors = [{
-    match: f => (f.author && f.author.name === "NPR"),
+    // rss2json feeds
+    match: f => f.feed && f.feed.url,
+    process: f => {
+      for (var k in f.feed) {
+        f[k] = f[k] || f.feed[k];
+      }
+      return f;
+    }
+  }, {
+    match: f => f.author && f.author.name === "NPR",
     process: f => {
       f.items = f.items.map(item => {
         item.image = (item.image || '').replace(
