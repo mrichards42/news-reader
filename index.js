@@ -1,4 +1,5 @@
 (function({root, feeds, templates}) {
+  var DEFAULT_IMAGE = "data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO8/x8AAsMB4GQLJSgAAAAASUVORK5CYII="
 
   var domParser = new DOMParser();
   function unencodeHTML(s) {
@@ -50,6 +51,8 @@
           item.image = item.image || (item.enclosure && item.enclosure.link);
           if (item.image) {
             item.image = unencodeHTML(item.image);
+          } else {
+            item.image = DEFAULT_IMAGE;
           }
           // Formatting
           item.source_icon = f.icon;
