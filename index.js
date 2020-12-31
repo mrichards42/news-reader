@@ -26,12 +26,12 @@
       return f;
     }
   }, {
-    match: f => f.author && f.author.name === "NPR",
+    match: f => f.title && f.title.search(/NPR/),
     process: f => {
       f.items = f.items.map(item => {
-        item.image = (item.image || '').replace(
+        item.image = (item.image || item.thumbnail || '').replace(
           // Optional image type '-' 40-character hash?
-          /(_slide|_wide|_custom)?\b(-[^-.]*)(.\w+)$/,
+          /(_slide|_wide|_custom)?\b(-[^-.]*)(.\w+)(\?.*)$/,
           '$2-s300$3'
         );
         return item;
